@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
+import os  # ★ 수정 1: os import 추가
 
 
 class QuestionType(Enum):
@@ -17,6 +18,11 @@ class QuestionType(Enum):
     TEXT = "text"
     BOOLEAN = "boolean"
     BOOLEAN_WITH_DETAILS = "boolean_with_details"
+
+
+# ★ 수정 2: JSON 파일의 정확한 경로 설정
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+JSON_CONFIG_PATH = os.path.join(BASE_DIR, "ppt_designer_system.json")
 
 
 @dataclass
@@ -57,7 +63,8 @@ class TemplateRecommendation:
 class PPTDesignerSystem:
     """Main system class for PPT Designer"""
     
-    def __init__(self, config_path: str = "ppt_designer_system.json"):
+    # ★ 수정 3: 파일 경로 기본값을 절대 경로로 변경
+    def __init__(self, config_path: str = JSON_CONFIG_PATH):
         """Initialize the system with configuration"""
         with open(config_path, 'r', encoding='utf-8') as f:
             self.config = json.load(f)
