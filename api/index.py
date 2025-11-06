@@ -7,9 +7,13 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from ppt_designer_backend import PPTDesignerSystem, TemplateSearchEngine
 import json
-import os
+import os  # ★ 수정 1: os import 추가
 from datetime import datetime
 from typing import Dict, List, Any
+
+# ★ 수정 2: JSON 파일의 정확한 경로 설정
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+JSON_CONFIG_PATH = os.path.join(BASE_DIR, "ppt_designer_system.json")
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -27,7 +31,8 @@ search_engine = TemplateSearchEngine()
 def get_config():
     """Get system configuration"""
     try:
-        with open('ppt_designer_system.json', 'r', encoding='utf-8') as f:
+        # ★ 수정 3: 파일 경로를 절대 경로로 변경
+        with open(JSON_CONFIG_PATH, 'r', encoding='utf-8') as f:
             config = json.load(f)
         return jsonify(config), 200
     except Exception as e:
